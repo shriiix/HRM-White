@@ -13,8 +13,10 @@ model Tenant {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users     User[]
-  employees Employee[]
+  users        User[]
+  employees    Employee[]
+  departments  Department[]
+  designations Designation[]
 }
 
 model User {
@@ -28,8 +30,8 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  tenant       Tenant   @relation(fields: [tenantId], references: [id])
-  employee     Employee?
+  tenant   Tenant    @relation(fields: [tenantId], references: [id])
+  employee Employee?
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -49,10 +51,49 @@ model Employee {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  tenant       Tenant   @relation(fields: [tenantId], references: [id])
-  user         User     @relation(fields: [userId], references: [id])
+  tenant        Tenant       @relation(fields: [tenantId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
+  department    Department?  @relation(fields: [departmentId], references: [id])
+  departmentId  String?
+  designation   Designation? @relation(fields: [designationId], references: [id])
+  designationId String?
+
 
   @@unique([tenantId, employeeCode])
   @@unique([tenantId, email])
+  @@index([tenantId])
+}
+
+model Department {
+  id        String   @id @default(cuid())
+  tenantId  String
+  name      String
+  code      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id])
+  employees Employee[]
+
+  @@unique([tenantId, name])
+  @@unique([tenantId, code])
+  @@index([tenantId])
+}
+
+model Designation {
+  id        String   @id @default(cuid())
+  tenantId  String
+  name      String
+  code      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id])
+  employees Employee[]
+
+  @@unique([tenantId, name])
+  @@unique([tenantId, code])
   @@index([tenantId])
 }
