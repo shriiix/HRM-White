@@ -13,4 +13,7 @@ export class CreateEmployeeDto {
   joiningDate: string;
 
   status?: string;
+  departmentId?: string;
+  designationId?: string;
+  locationId?: string;
 }

@@ -10,6 +10,7 @@ import { TenantModule } from './tenant/tenant.module.js';
 import { EmployeeModule } from './employee/employee.module.js';
 import { DepartmentModule } from './department/department.module.js';
 import { DesignationModule } from './designation/designation.module.js';
+import { LocationModule } from './location/location.module.js';
 
 
 
@@ -31,6 +32,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     EmployeeModule,
     DepartmentModule,
     DesignationModule,
+    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -4,7 +4,7 @@ import { CreateEmployeeDto } from './dto/create-employee.dto.js';
 
 @Injectable()
 export class EmployeeService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(dto: CreateEmployeeDto) {
     return this.prisma.employee.create({
@@ -18,6 +18,10 @@ export class EmployeeService {
         phone: dto.phone,
         joiningDate: new Date(dto.joiningDate),
         status: dto.status ?? 'ACTIVE',
+
+        departmentId: dto.departmentId,
+        designationId: dto.designationId,
+        locationId: dto.locationId,
       },
     });
   }
