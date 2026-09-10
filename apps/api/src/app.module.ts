@@ -11,6 +11,9 @@ import { EmployeeModule } from './employee/employee.module.js';
 import { DepartmentModule } from './department/department.module.js';
 import { DesignationModule } from './designation/designation.module.js';
 import { LocationModule } from './location/location.module.js';
+import { RoleModule } from './role/role.module.js';
+import { PermissionModule } from './permission/permission.module.js';
+import { RolePermissionModule } from './role-permission/role-permission.module.js';
 
 
 
@@ -33,6 +36,9 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     DepartmentModule,
     DesignationModule,
     LocationModule,
+    RoleModule,
+    PermissionModule,
+    RolePermissionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
