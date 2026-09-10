@@ -33,8 +33,9 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  tenant   Tenant    @relation(fields: [tenantId], references: [id])
-  employee Employee?
+  tenant    Tenant     @relation(fields: [tenantId], references: [id])
+  employee  Employee?
+  userRoles UserRole[]
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -158,6 +159,7 @@ model Role {
 
   tenant          Tenant           @relation(fields: [tenantId], references: [id])
   rolePermissions RolePermission[]
+  userRoles       UserRole[]
 
   @@unique([tenantId, name])
   @@unique([tenantId, code])
@@ -176,4 +178,18 @@ model RolePermission {
   @@unique([roleId, permissionId])
   @@index([roleId])
   @@index([permissionId])
+}
+
+model UserRole {
+  id        String   @id @default(cuid())
+  userId    String
+  roleId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
 }

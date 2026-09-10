@@ -14,6 +14,7 @@ import { LocationModule } from './location/location.module.js';
 import { RoleModule } from './role/role.module.js';
 import { PermissionModule } from './permission/permission.module.js';
 import { RolePermissionModule } from './role-permission/role-permission.module.js';
+import { RoleUserModule } from './role-user/role-user.module.js';
 
 
 
@@ -39,6 +40,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     RoleModule,
     PermissionModule,
     RolePermissionModule,
+    RoleUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
