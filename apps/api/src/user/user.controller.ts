@@ -4,13 +4,14 @@ import {
   Get,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -18,12 +19,15 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Query('tenantId') tenantId: string) {
+    return this.userService.findAll(tenantId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  findOne(
+    @Param('id') id: string,
+    @Query('tenantId') tenantId: string,
+  ) {
+    return this.userService.findOne(id, tenantId);
   }
 }

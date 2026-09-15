@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import * as argon2 from 'argon2';
 import { PrismaService } from '../database/prisma.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 
@@ -6,26 +7,17 @@ import { CreateUserDto } from './dto/create-user.dto.js';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private get user() {
-    return (this.prisma as any).user;
-  }
+  async create(dto: CreateUserDto) {
+    const passwordHash = await argon2.hash(dto.password);
 
-  async create(createUserDto: CreateUserDto) {
-    const { tenantId, email, password, firstName, lastName } = createUserDto;
-
-    return this.user.create({
+    return this.prisma.user.create({
       data: {
-        tenantId,
-        email,
-        passwordHash: password,
-        firstName,
-        lastName,
+        tenantId: dto.tenantId,
+        email: dto.email,
+        passwordHash,
+        firstName: dto.firstName,
+        lastName: dto.lastName,
       },
-    });
-  }
-
-  async findAll() {
-    return this.user.findMany({
       select: {
         id: true,
         tenantId: true,
@@ -39,9 +31,31 @@ export class UserService {
     });
   }
 
-  async findOne(id: string) {
-    return this.user.findUnique({
-      where: { id },
+  async findAll(tenantId: string) {
+    return this.prisma.user.findMany({
+      where: { tenantId },
+      select: {
+        id: true,
+        tenantId: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async findOne(id: string, tenantId: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        id,
+        tenantId,
+      },
       select: {
         id: true,
         tenantId: true,
