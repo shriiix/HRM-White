@@ -1,6 +1,3 @@
-import pypandoc
-
-content = """# Finora HRM Platform
 
 A multi-tenant Human Resource Management (HRM) platform designed for white-label usage by multiple organizations.
 
